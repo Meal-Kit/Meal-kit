@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html
+        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        xmlns:th="http://www.thymeleaf.org"
+        layout:decorate="~{global/layouts/layout}">
+
+<div layout:fragment="content">
+    <div class="container">
+        <div class="login-box">
+            <div id="loginBoxTitle">Meal-Commerce</div>
+            <form id="findForm" th:action="@{/customer/findUsername}" th:object="${findUsernameForm}" method="POST">
+                <div class="form-group">
+                    <label>이메일</label>
+                    <input type="email" class="form-control" th:field="*{email}" style="ime-mode:disabled">
+                </div>
+                <div id="login-btn-box">
+                    <div style=""><button class="btn btn-primary" style="margin-left: 180px" onclick="findCheck()">아이디 찾기</button></div>
+                </div>
+                <div class="find-id">
+                    아이디 : <span th:if="${customer != null}" th:text="${customer.username}"></span>
+                </div>
+            </form>
+        </div>
+        <div class="findUsername-menu-box">
+            <a href="/customer/login" class="inline-flex">로그인</a>
+            <a href="/customer/findPassword" class="inline-flex left-margin">비밀번호 찾기</a>
+            <a href="/" class="inline-flex left-border left-margin">홈으로</a>
+        </div>
+    </div>
+</div>
+</html>

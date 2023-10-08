@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html
+        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        xmlns:th="http://www.thymeleaf.org"
+        layout:decorate="~{global/layouts/layout}">
+
+<div layout:fragment="content">
+<div>이름 : <span th:text="${customer.name}"></span></div>
+<div>아이디 : <span th:text="${customer.username}"></span></div>
+<div>이메일 : <span th:text="${customer.email}"></span></div>
+<div>주소 : <span th:text="${customer.address}"></span></div>
+<div>전화번호 : <span th:text="${customer.tel}"></span></div>
+
+<a href="/customer/modify" class="inline-flex" sec:authorize="isAuthenticated()">정보수정</a>
+</div>
+</html>
