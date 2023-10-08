@@ -11,9 +11,9 @@ spring:
     restart:
       enabled: true
   datasource:
-    url: jdbc:mysql://127.0.0.1:3306/mealKit_dev?useSSL=false&useUnicode=true&serverTimezone=Asia/Seoul&allowPublicKeyRetrieval=true
-    username: root
-    password: rnjswotns12
+    url: jdbc:mysql://${DEVDB_URL}:3306/mealKit_dev?useSSL=false&useUnicode=true&serverTimezone=Asia/Seoul&allowPublicKeyRetrieval=true
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
   jpa:
     hibernate:
       ddl-auto: create
