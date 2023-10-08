@@ -6,8 +6,10 @@ import com.js.mealkitecommerce.app.exception.EmailDuplicatedException;
 import com.js.mealkitecommerce.app.exception.NotMatchPresentPassword;
 import com.js.mealkitecommerce.app.exception.UserIdDuplicatedException;
 import com.js.mealkitecommerce.app.global.email.service.EmailService;
+import com.js.mealkitecommerce.app.global.util.ResponseUtil;
 import com.js.mealkitecommerce.app.global.util.Util;
 import com.js.mealkitecommerce.app.model.VO.Customer.*;
+import com.js.mealkitecommerce.app.model.common.ResponseData;
 import com.js.mealkitecommerce.app.model.context.CustomerContext;
 import com.js.mealkitecommerce.app.service.CustomerService;
 import javax.servlet.ServletException;
@@ -15,6 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.RandomStringUtils;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -55,7 +58,7 @@ public class CustomerController {
 
     @GetMapping("/checkEmail")
     @ResponseBody
-    public Customer checkDuplicateEmail(SingleParamVO param) {
+    public Customer checkDuplicateEmail(@RequestBody SingleParamVO param) {
         Customer customer = customerService.findByEmail(param.getParam()).orElse(null);
 
         return customer;
@@ -63,10 +66,10 @@ public class CustomerController {
 
     @GetMapping("/checkUsername")
     @ResponseBody
-    public Customer checkDuplicateUsername(SingleParamVO param) {
+    public ResponseEntity<ResponseData> checkDuplicateUsername(@RequestBody SingleParamVO param) {
         Customer customer = customerService.findByUsername(param.getParam()).orElse(null);
 
-        return customer;
+        return ResponseUtil.successResponse(customer);
     }
 
     @PreAuthorize("isAnonymous()")
