@@ -216,7 +216,6 @@ public class CustomerController {
                         .orElseThrow(() -> new DataNotFoundException("등록된 사용자가 없습니다."));
 
         String newPassword = RandomStringUtils.randomAlphanumeric(10);
-        ;
 
         try {
             customerService.setNewPassword(customer, newPassword);
