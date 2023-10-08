@@ -2,13 +2,17 @@ package com.js.mealkitecommerce.app.entity.material;
 
 import static com.querydsl.core.types.PathMetadataFactory.*;
 
-import com.querydsl.core.types.Path;
-import com.querydsl.core.types.PathMetadata;
 import com.querydsl.core.types.dsl.*;
-import com.querydsl.core.types.dsl.PathInits;
-import javax.annotation.processing.Generated;
 
-/** QMaterial is a Querydsl query type for Material */
+import com.querydsl.core.types.PathMetadata;
+import javax.annotation.processing.Generated;
+import com.querydsl.core.types.Path;
+import com.querydsl.core.types.dsl.PathInits;
+
+
+/**
+ * QMaterial is a Querydsl query type for Material
+ */
 @Generated("com.querydsl.codegen.DefaultEntitySerializer")
 public class QMaterial extends EntityPathBase<Material> {
 
@@ -18,20 +22,19 @@ public class QMaterial extends EntityPathBase<Material> {
 
     public static final QMaterial material = new QMaterial("material");
 
-    public final com.js.mealkitecommerce.app.entity.QBaseEntity _super =
-            new com.js.mealkitecommerce.app.entity.QBaseEntity(this);
+    public final com.js.mealkitecommerce.app.entity.QBaseEntity _super = new com.js.mealkitecommerce.app.entity.QBaseEntity(this);
 
-    // inherited
+    //inherited
     public final DateTimePath<java.time.LocalDateTime> createDate = _super.createDate;
 
-    // inherited
+    //inherited
     public final NumberPath<Long> id = _super.id;
 
     public final com.js.mealkitecommerce.app.entity.QKit kit;
 
     public final QMaterialKeyword materialKeyword;
 
-    // inherited
+    //inherited
     public final DateTimePath<java.time.LocalDateTime> modifyDate = _super.modifyDate;
 
     public QMaterial(String variable) {
@@ -52,13 +55,9 @@ public class QMaterial extends EntityPathBase<Material> {
 
     public QMaterial(Class<? extends Material> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
-        this.kit =
-                inits.isInitialized("kit")
-                        ? new com.js.mealkitecommerce.app.entity.QKit(forProperty("kit"), inits.get("kit"))
-                        : null;
-        this.materialKeyword =
-                inits.isInitialized("materialKeyword")
-                        ? new QMaterialKeyword(forProperty("materialKeyword"))
-                        : null;
+        this.kit = inits.isInitialized("kit") ? new com.js.mealkitecommerce.app.entity.QKit(forProperty("kit"), inits.get("kit")) : null;
+        this.materialKeyword = inits.isInitialized("materialKeyword") ? new QMaterialKeyword(forProperty("materialKeyword")) : null;
     }
+
 }
+
