@@ -9,7 +9,10 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+
+import static org.springframework.security.config.http.SessionCreationPolicy.STATELESS;
 
 @Configuration
 @EnableWebSecurity
@@ -17,23 +20,25 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 @RequiredArgsConstructor
 public class SecurityConfig {
     private final SecurityService securityService;
+    private final JwtAuthorizationFilter jwtAuthorizationFilter;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http.authorizeRequests(authorizeRequests -> authorizeRequests.antMatchers("/**").permitAll())
-                .formLogin(
-                        formLogin ->
-                                formLogin
-                                        .loginPage("/customer/login") // GET
-                                        .loginProcessingUrl("/customer/login") // POST
-                        )
-                .logout(
-                        logout ->
-                                logout
-                                        //                                .logoutUrl("/customer/logout")
-                                        .logoutRequestMatcher(new AntPathRequestMatcher("/customer/logout"))
-                                        .logoutSuccessUrl("/?msg=Logout!!! ")
-                                        .invalidateHttpSession(true));
+        http.authorizeRequests(authorizeRequests -> authorizeRequests
+                        .antMatchers("/**")
+                        .permitAll()
+                        .anyRequest()
+                )
+                .httpBasic().disable() // httpBaic 로그인 방식 끄기
+                .formLogin().disable() // 폼 로그인 방식 끄기
+                .sessionManagement(
+                        sessionManagement ->
+                                sessionManagement.sessionCreationPolicy(STATELESS)
+                ) // 세션 사용안함
+                .addFilterBefore( // 로그인, 회원가입 제외 모든 엔드포인트에 인증필요 필터 추가
+                        jwtAuthorizationFilter,
+                        UsernamePasswordAuthenticationFilter.class
+                );
 
         return http.build();
     }

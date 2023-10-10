@@ -19,7 +19,7 @@ public class ResponseUtil {
                 HttpStatus.OK);
     }
 
-    private static ResponseEntity<ResponseData> failResponse() {
+    public static ResponseEntity<ResponseData> failResponse() {
         return new ResponseEntity<>(
                 ResponseData.builder()
                         .result("N")

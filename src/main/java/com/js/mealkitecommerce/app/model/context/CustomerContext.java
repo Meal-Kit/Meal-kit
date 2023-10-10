@@ -2,9 +2,13 @@ package com.js.mealkitecommerce.app.model.context;
 
 import com.js.mealkitecommerce.app.entity.Customer;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
+
+import com.js.mealkitecommerce.app.global.UserRole;
 import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 
 @Getter
@@ -17,6 +21,7 @@ public class CustomerContext extends User {
     private final String email;
     private final String address;
     private final String tel;
+
 
     public CustomerContext(Customer customer, List<GrantedAuthority> authorities) {
         super(customer.getUsername(), customer.getPassword(), authorities);

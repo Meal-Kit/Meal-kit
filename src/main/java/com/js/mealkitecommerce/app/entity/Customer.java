@@ -4,8 +4,17 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.validation.constraints.Size;
+
+import com.js.mealkitecommerce.app.global.util.Util;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
 
 @Entity
 @Setter
@@ -24,4 +33,21 @@ public class Customer extends BaseEntity {
     private String email;
     private String address;
     private String tel;
+
+    public Collection<? extends GrantedAuthority> getUserRole() {
+        List<GrantedAuthority> userRole = new ArrayList<>();
+        userRole.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
+
+        return userRole;
+    }
+
+    public Map<String, Object> getAccessTokenClaims() {
+        return Util.mapOf(
+                "username", getUsername(),
+                "name", getName(),
+                "email", getEmail(),
+                "address", getAddress(),
+                "tel", getTel()
+        );
+    }
 }

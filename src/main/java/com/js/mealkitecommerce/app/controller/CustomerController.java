@@ -15,8 +15,12 @@ import com.js.mealkitecommerce.app.service.CustomerService;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+
+import com.js.mealkitecommerce.app.service.common.JwtService;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.RandomStringUtils;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -31,6 +35,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/customer")
 public class CustomerController {
     private final CustomerService customerService;
+    private final JwtService jwtService;
     private final PasswordEncoder passwordEncoder;
 
     private final EmailService emailService;
@@ -103,6 +108,29 @@ public class CustomerController {
     @GetMapping("/login")
     public String showLogin() {
         return "customer/login";
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<ResponseData> login(@RequestBody LoginVO vo) {
+        if (vo.isNotValid()) {
+            return ResponseUtil.failResponse();
+        }
+
+        Customer customer = customerService.findByUsername(vo.getUsername()).orElse(null);
+
+        if (customer == null) {
+            return ResponseUtil.failResponse();
+        }
+
+        // accessToken 생성
+        String accessToken = jwtService.generateAccessKey(customer);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Authentication", accessToken);
+
+
+
+        return ResponseUtil.successResponse(Customer.builder().username(customer.getUsername()).name(customer.getName()));
     }
 
     @PreAuthorize("isAuthenticated()")
