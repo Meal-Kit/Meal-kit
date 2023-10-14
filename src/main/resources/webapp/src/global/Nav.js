@@ -1,10 +1,11 @@
-import { Component } from "react";
 
-
-
-class Main extends Component {
-
-    render(){
+function Nav(){
+    const logoutHandler = () =>{
+        localStorage.removeItem('cutomer');
+        setIsLoggedIn(false);
+        window.location.href = '/';
+    }
+    //로그아웃 핸들러
         return(
             <div>
                 <div className="logo">Mealkit</div>
@@ -25,6 +26,4 @@ class Main extends Component {
     }
 
 
-
-}
-export default Main;
+export default nav;
