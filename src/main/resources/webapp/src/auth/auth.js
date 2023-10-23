@@ -1,6 +1,6 @@
 import axios from "axios";
 import { async } from "q";
-
+import { atom, selector } from "recoil"; 
 
 /* Axios instance */
 export const Auth = axios.create({
@@ -14,16 +14,12 @@ export const Tokenstate = atom({
     key:'Token',
     default: null
 })
-/*regist State*/
-export const registState = atom({
-    key:'regist',
-    default:{
-        id:'',
-        pw:'',
-        confirpw:'',
-        email:'',
-        postnumber:'',
-        detailadress:'',
 
-    }
+/*recoil selector로 JWT토큰 존재 유무 확인 */
+export const isAuthenticated = selector({
+    key: 'isAuthenticated',
+    get: ({ get }) => {
+        const token = get(Tokenstate);
+        return !!token;
+    },
 });

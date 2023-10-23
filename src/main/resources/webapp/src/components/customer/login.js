@@ -1,39 +1,51 @@
-import { useState } from "react"; 
-import { Tokenstate, login } from "../../auth/auth";
-import { useRecoilState } from "recoil";
+import React, { useState } from 'react';
+import { useRecoilState } from 'recoil';
+import axios from 'axios';
+import { Tokenstate } from '../../auth/auth';
+import { useNavigate } from 'react-router-dom'; 
 
-function login(){
-    const [id, setid] = useState("")
-    const [pw, setpw] = useState("")
-    const [token, settoken] = useRecoilState(Tokenstate)
-    
-    const idhandle = async (e) =>{
-        setid({...values, [e.target.id]:e.target.value,});
+function Login () {
+  const [token, setToken] = useRecoilState(Tokenstate);
+  const [formData, setFormData] = useState({ id: '', pw: '' });
+  const navigate = useNavigate();
+
+  const handleLogin = async () => {
+    try {
+      //백엔드 API 엔드포인트를 사용하도록 설정
+      const response = await axios.post('/api/login', formData);
+
+      // 로그인 성공 시 토큰을 Recoil 상태에 저장
+      const { token } = response.data;
+      setToken(token);
+      
+      // 성공하면 메인페이지 이동
+      navigate('/home')
+    } catch (error) {
+      console.error(error);
+      // 로그인 실패 시 처리
     }
-    const pwhandle = async (e) =>{
-        setpw({...values, [e.target.pw]:e.target.value,});
-    }
-    const loginhandle= async () =>{
-        try{
-            const response = await axios.post('APILINk', {
-                id,
-                pw
-            });
-            const token = response.data.token;// 서버에 토큰을 받아 recoil에저장
-            
-            settoken(token);
-        }catch(error){
-            alert("아이디와 비밀번호를 확인해주세요", error)
-        }
-    }
-        return(
+  };
+
+  return (
     <div>
-            <div>로그인페이지<br/>
-                이메일 : <input id="id" onChange={idhandle} value={values.id} type="text"/> <br/>
-                비밀번호 : <input id="pw" onChange={pwhandle} value={values.pw} type="password"/> 
-                <button onclick={loginhandle}type="submit">로그인</button>
-            </div>
+      <h2>Login</h2>
+      <input
+        type="text"
+        name="id"
+        placeholder="id"
+        value={formData.username}
+        onChange={(e) => setFormData({ ...formData, id: e.target.value })}
+      />
+      <input
+        type="password"
+        name="password"
+        placeholder="Password"
+        value={formData.password}
+        onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+      />
+      <button onClick={handleLogin}>Login</button>
     </div>
-        );
-    }
-export default login
+  );
+};
+
+export default Login;
