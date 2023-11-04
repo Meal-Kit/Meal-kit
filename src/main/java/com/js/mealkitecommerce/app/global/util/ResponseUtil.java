@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.js.mealkitecommerce.app.entity.Customer;
 import com.js.mealkitecommerce.app.model.common.ResponseData;
 import lombok.experimental.UtilityClass;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
@@ -16,6 +17,17 @@ public class ResponseUtil {
                         .statusCode("Success")
                         .data(data)
                         .build(),
+                HttpStatus.OK);
+    }
+
+    public static ResponseEntity<ResponseData> successResponseWithHeader(Object data, HttpHeaders header) {
+        return new ResponseEntity<>(
+                ResponseData.builder()
+                        .result("Y")
+                        .statusCode("Success")
+                        .data(data)
+                        .build(),
+                header,
                 HttpStatus.OK);
     }
 

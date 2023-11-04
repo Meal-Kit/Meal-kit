@@ -111,12 +111,13 @@ public class CustomerController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<ResponseData> login(@RequestBody LoginVO vo) {
-        if (vo.isNotValid()) {
+    @ResponseBody
+    public ResponseEntity<ResponseData> login(@RequestBody LoginVO request) {
+        if (request.isNotValid()) {
             return ResponseUtil.failResponse();
         }
 
-        Customer customer = customerService.findByUsername(vo.getUsername()).orElse(null);
+        Customer customer = customerService.findByUsername(request.getUsername()).orElse(null);
 
         if (customer == null) {
             return ResponseUtil.failResponse();
@@ -124,13 +125,12 @@ public class CustomerController {
 
         // accessToken 생성
         String accessToken = jwtService.generateAccessKey(customer);
+        System.out.println(accessToken);
 
         HttpHeaders headers = new HttpHeaders();
         headers.set("Authentication", accessToken);
 
-
-
-        return ResponseUtil.successResponse(Customer.builder().username(customer.getUsername()).name(customer.getName()));
+        return ResponseUtil.successResponseWithHeader(customer, headers);
     }
 
     @PreAuthorize("isAuthenticated()")
