@@ -12,11 +12,13 @@ import com.js.mealkitecommerce.app.model.VO.Customer.*;
 import com.js.mealkitecommerce.app.model.common.ResponseData;
 import com.js.mealkitecommerce.app.model.context.CustomerContext;
 import com.js.mealkitecommerce.app.service.CustomerService;
+import com.js.mealkitecommerce.app.service.common.JwtService;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.RandomStringUtils;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -31,6 +33,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/customer")
 public class CustomerController {
     private final CustomerService customerService;
+    private final JwtService jwtService;
     private final PasswordEncoder passwordEncoder;
 
     private final EmailService emailService;
@@ -103,6 +106,29 @@ public class CustomerController {
     @GetMapping("/login")
     public String showLogin() {
         return "customer/login";
+    }
+
+    @PostMapping("/login")
+    @ResponseBody
+    public ResponseEntity<ResponseData> login(@RequestBody LoginVO request) {
+        if (request.isNotValid()) {
+            return ResponseUtil.failResponse();
+        }
+
+        Customer customer = customerService.findByUsername(request.getUsername()).orElse(null);
+
+        if (customer == null) {
+            return ResponseUtil.failResponse();
+        }
+
+        // accessToken 생성
+        String accessToken = jwtService.generateAccessKey(customer);
+        System.out.println(accessToken);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Authentication", accessToken);
+
+        return ResponseUtil.successResponseWithHeader(customer, headers);
     }
 
     @PreAuthorize("isAuthenticated()")
