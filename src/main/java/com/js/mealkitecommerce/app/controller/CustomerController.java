@@ -12,15 +12,13 @@ import com.js.mealkitecommerce.app.model.VO.Customer.*;
 import com.js.mealkitecommerce.app.model.common.ResponseData;
 import com.js.mealkitecommerce.app.model.context.CustomerContext;
 import com.js.mealkitecommerce.app.service.CustomerService;
+import com.js.mealkitecommerce.app.service.common.JwtService;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-
-import com.js.mealkitecommerce.app.service.common.JwtService;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;

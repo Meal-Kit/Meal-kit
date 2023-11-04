@@ -5,6 +5,14 @@ import com.js.mealkitecommerce.app.global.UserRole;
 import com.js.mealkitecommerce.app.global.jwt.TokenProvider;
 import com.js.mealkitecommerce.app.model.context.CustomerContext;
 import com.js.mealkitecommerce.app.service.CustomerService;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import javax.servlet.FilterChain;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -16,15 +24,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
 @Slf4j
 @Component
 @RequiredArgsConstructor
@@ -33,16 +32,22 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
     private final CustomerService customerService;
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+    protected void doFilterInternal(
+            HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
+            throws ServletException, IOException {
         String token = request.getHeader("Authentication");
 
         if (token != null) {
             if (jwtProvider.verify(token)) {
                 Map<String, Object> claims = jwtProvider.getClaims(token);
                 String username = (String) claims.get("username");
-                Customer customer = customerService.findByUsername(username).orElseThrow(
-                        () -> new UsernameNotFoundException("'%s' username not found.".formatted(username))
-                );
+                Customer customer =
+                        customerService
+                                .findByUsername(username)
+                                .orElseThrow(
+                                        () ->
+                                                new UsernameNotFoundException(
+                                                        "'%s' username not found.".formatted(username)));
 
                 forceAuthentication(customer);
             }
@@ -63,10 +68,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
 
         UsernamePasswordAuthenticationToken authentication =
                 UsernamePasswordAuthenticationToken.authenticated(
-                        customerContext,
-                        null,
-                        customer.getUserRole()
-                );
+                        customerContext, null, customer.getUserRole());
 
         SecurityContext context = SecurityContextHolder.createEmptyContext();
         context.setAuthentication(authentication);

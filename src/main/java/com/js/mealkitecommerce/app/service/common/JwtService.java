@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class JwtService {
     private final TokenProvider tokenProvider;
+
     public String generateAccessKey(Customer customer) {
         return tokenProvider.generateAccessToken(customer.getAccessTokenClaims());
     }

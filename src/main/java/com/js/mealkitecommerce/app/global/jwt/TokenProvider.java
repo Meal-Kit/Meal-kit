@@ -3,15 +3,14 @@ package com.js.mealkitecommerce.app.global.jwt;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
-
 import java.security.InvalidParameterException;
 import java.security.Key;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Map;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
 @Slf4j
 @Component
@@ -22,10 +21,13 @@ public class TokenProvider {
 
     private static final String AUTHORITIES_KEY = "auth";
     private static final String BEARER_TYPE = "bearer";
+
     @Value("${jwt.access-token-expiration-time}")
     private int ACCESS_TOKEN_EXPIRE_TIME;
+
     @Value("${jwt.refresh-token-expiration-time}")
     private int REFRESH_TOKEN_EXPIRE_TIME;
+
     private final Key key;
 
     public TokenProvider(@Value("${jwt.secretKey}") String secretKey) {
@@ -55,10 +57,7 @@ public class TokenProvider {
     // token 확인을 위한 로직
     public boolean verify(String token) {
         try {
-            Jwts.parserBuilder()
-                    .setSigningKey(key)
-                    .build()
-                    .parseClaimsJws(token);
+            Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
         } catch (Exception e) {
             return false;
         }
@@ -69,12 +68,11 @@ public class TokenProvider {
     // Claims를 가져오기 위한 로직
     public Map<String, Object> getClaims(String token) {
         try {
-            return Jwts.parserBuilder()
-                    .setSigningKey(key)
-                    .build()
-                    .parseClaimsJws(token)
-                    .getBody();
-        } catch(ExpiredJwtException | UnsupportedJwtException | MalformedJwtException | IllegalArgumentException e) {
+            return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody();
+        } catch (ExpiredJwtException
+                | UnsupportedJwtException
+                | MalformedJwtException
+                | IllegalArgumentException e) {
             e.printStackTrace();
             throw new InvalidParameterException("유효하지 않은 토큰입니다");
         }

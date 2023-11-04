@@ -1,20 +1,18 @@
 package com.js.mealkitecommerce.app.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.validation.constraints.Size;
-
 import com.js.mealkitecommerce.app.global.util.Util;
-import lombok.*;
-import lombok.experimental.SuperBuilder;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.validation.constraints.Size;
+import lombok.*;
+import lombok.experimental.SuperBuilder;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 @Entity
 @Setter
@@ -47,7 +45,6 @@ public class Customer extends BaseEntity {
                 "name", getName(),
                 "email", getEmail(),
                 "address", getAddress(),
-                "tel", getTel()
-        );
+                "tel", getTel());
     }
 }
