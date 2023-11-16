@@ -1,0 +1,26 @@
+.navbar{
+    width:100%;
+    background-color:   black;
+    padding: 15px 0px;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.navbarMenu{
+    color:white;
+    margin: 8px;
+    text-decoration: none;    
+}
+.search-box{
+    display: flex;
+}
+.user-section{
+    position:absolute;
+    right: 70px;
+}
+.box{
+    width:400px;
+    height:36px;
+    border-radius: 13px;
+}

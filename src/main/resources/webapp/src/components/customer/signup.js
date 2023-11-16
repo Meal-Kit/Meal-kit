@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { useRecoilState } from 'recoil';
 import axios from 'axios';
-import { userState } from '../recoil/auth';
+import { isAuthenticated } from '../../auth/auth';
 
 function  SignUp () {
-  const [user, setUser] = useRecoilState(userState);
+  const [user, setUser] = useRecoilState(isAuthenticated);
   const [formData, setFormData] = useState({
     id: '',
     password: '',
@@ -25,7 +25,6 @@ function  SignUp () {
       console.error(error);
     }
     const adresshandle={
-        click
     }
   };
 
