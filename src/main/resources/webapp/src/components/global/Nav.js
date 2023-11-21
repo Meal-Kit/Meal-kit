@@ -1,7 +1,11 @@
-import { Component } from "react";
+import { Component} from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
+import {Link} from 'react-router-dom';
 import { Tokenstate } from "../../auth/auth";
+import { GiHamburgerMenu } from "react-icons/gi";
+import { FaSearch } from "react-icons/fa";
 import '../../style/Nav.scss';
+
 
 
     
@@ -15,10 +19,26 @@ export default function Nav() {
     }
     return(
         <div className="navbar">
-            <div className="logo">Mealkit</div>
-            <div className="search-box">
-                <input className="box"type="box"placeholder="검색어를 입력해주세요."></input>
+            {/* 카테고리 */}
+            <div className="categorybox">
+                <GiHamburgerMenu/>
+                <div className="category">
+                    카테고리
+                    <ul className="subcategory-list">
+                        <li>Subcategory 1</li>
+                        <li>Subcategory 2</li>
+                        <li>Subcategory 3</li>
+                    </ul>
+                </div>
             </div>
+            {/* 검색창 */}
+            <div className="search-box">
+                <input className="box" type="box"placeholder="검색어를 입력해주세요."></input>
+                <button className="faSearch">
+                <FaSearch />
+                </button>
+            </div>
+            {/* 유저영역 */}
             <div className="user-section">
                 {LoginState?(
                     <div className="user">
@@ -29,8 +49,7 @@ export default function Nav() {
                     </div>
                 ):(
                     <div className="guest">
-                    <div className="navbarMenu">로그인</div>
-                    </div>
+                        <Link to='/login'className="navbarMenu" >로그인</Link></div>
             )}
             </div>
         </div>

@@ -5,6 +5,7 @@
     display:flex;
     justify-content: center;
     align-items: center;
+    padding: 5px;
 }
 
 .navbarMenu{
@@ -12,15 +13,71 @@
     margin: 8px;
     text-decoration: none;    
 }
-.search-box{
-    display: flex;
-}
+
 .user-section{
     position:absolute;
     right: 70px;
+    display:flex;
+    .navbarMenu{
+        
+        &:hover{
+            color:gold
+        }
+}
+}
+
+//검색창
+.search-box{
+    display: flex;
+    border: 1px; 
+
+
 }
 .box{
-    width:400px;
-    height:36px;
-    border-radius: 13px;
+    width:330px;
+    height:30px;
+    outline: none;
 }
+.categorybox{
+    position: relative;
+    display: flex;
+    color:#ddd;
+    left: -33rem;
+    font-size: 18px;
+    font-weight: 500;
+    line-height: 20px;
+    height:100%;
+    padding:0.4rem;
+    &:hover{
+        color:gold
+    }
+    .category{
+        margin-left:0.3rem;
+    }
+    .subcategory-list {
+        display: none;
+        position: absolute;
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        background-color: #f9f9f9;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        z-index: 1;
+        top:2rem;
+        left:-5px;
+            li {
+                padding: 10px;
+                cursor: pointer;
+        
+                    &:hover {
+                    background-color: #ddd;
+                    }
+            }
+        }
+    
+        &:hover .subcategory-list {
+        display: block;
+        color: black;
+        }
+
+    }
