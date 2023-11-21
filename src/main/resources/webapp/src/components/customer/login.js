@@ -3,6 +3,7 @@ import { useRecoilState } from 'recoil';
 import axios from 'axios';
 import { Tokenstate } from '../../auth/auth';
 import { useNavigate } from 'react-router-dom'; 
+import '../../style/login.scss'
 
 function Login () {
   const [token, setToken] = useRecoilState(Tokenstate);
@@ -19,31 +20,38 @@ function Login () {
       setToken(token);
       
       // 성공하면 메인페이지 이동
-      navigate('/home')
+      navigate('/')
     } catch (error) {
-      console.error(error);
+      
       // 로그인 실패 시 처리
     }
   };
 
   return (
-    <div>
-      <h2>Login</h2>
+    <div className="login">
+      <h1>Login</h1>
       <input
         type="text"
         name="id"
-        placeholder="id"
+        className='idbox'
+        placeholder="아이디를 입력해주세요"
         value={formData.username}
         onChange={(e) => setFormData({ ...formData, id: e.target.value })}
       />
+      <br/>
       <input
         type="password"
         name="password"
-        placeholder="Password"
+        className='pwbox'
+        placeholder="비밀번호를 입력해주세요"
         value={formData.password}
         onChange={(e) => setFormData({ ...formData, password: e.target.value })}
       />
-      <button onClick={handleLogin}>Login</button>
+      <br/>
+      <button className="btn"onClick={handleLogin}>로그인</button>
+      <button className="btn" >
+        <a className="signup"href='/signup'>회원가입</a>
+        </button>
     </div>
   );
 };

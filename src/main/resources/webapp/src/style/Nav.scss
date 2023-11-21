@@ -1,5 +1,4 @@
 .navbar{
-    width:100%;
     background-color:   black;
     padding: 15px 0px;
     display:flex;
@@ -7,47 +6,17 @@
     align-items: center;
     padding: 5px;
 }
-
-.navbarMenu{
-    color:white;
-    margin: 8px;
-    text-decoration: none;    
-}
-
-.user-section{
-    position:absolute;
-    right: 70px;
-    display:flex;
-    .navbarMenu{
-        
-        &:hover{
-            color:gold
-        }
-}
-}
-
-//검색창
-.search-box{
-    display: flex;
-    border: 1px; 
-
-
-}
-.box{
-    width:330px;
-    height:30px;
-    outline: none;
-}
+//카테고리 
 .categorybox{
     position: relative;
     display: flex;
     color:#ddd;
-    left: -33rem;
+    right: 30rem;
     font-size: 18px;
     font-weight: 500;
     line-height: 20px;
     height:100%;
-    padding:0.4rem;
+    padding:0.6rem;
     &:hover{
         color:gold
     }
@@ -63,14 +32,14 @@
         background-color: #f9f9f9;
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         z-index: 1;
-        top:2rem;
-        left:-5px;
+        margin-top: 0.7rem;
+        width:140px;
             li {
                 padding: 10px;
                 cursor: pointer;
         
                     &:hover {
-                    background-color: #ddd;
+                    background-color: #ffffff;
                     }
             }
         }
@@ -81,3 +50,36 @@
         }
 
     }
+
+//검색창
+.search-box{
+    display: flex;
+    border: 1px; 
+
+
+}
+.box{
+    width:330px;
+    height:30px;
+    outline: none;
+}
+
+//유저
+.user-section{
+    position:absolute;
+    right: 3rem;
+    display:flex;
+    .navbarMenu{
+        
+        &:hover{
+            color:gold
+        }
+}
+}
+
+
+.navbarMenu{
+    color:white;
+    margin: 8px;
+    text-decoration: none;    
+}
