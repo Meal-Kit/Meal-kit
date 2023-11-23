@@ -1,15 +1,24 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { useRecoilState } from 'recoil';
 import axios from 'axios';
 import { isAuthenticated } from '../../auth/auth';
+import '../../style/login.scss';
+import getAddress from '../../modul/AdressForm';
 
-function  SignUp () {
+
+function SignUp() {
   const [user, setUser] = useRecoilState(isAuthenticated);
   const [formData, setFormData] = useState({
     id: '',
     password: '',
-  });   
-
+    age: '',
+    address: '',
+    postcode: '',
+    roadAddress: '',
+    jibunAddress: '',
+    detailAddress: '',
+    extraAddress: '',
+  });
   const handleInputChange = (e) => {
     setFormData({
       ...formData,
@@ -19,17 +28,32 @@ function  SignUp () {
 
   const handleSignUp = async () => {
     try {
-      const response = await axios.post('/api/signup', formData); // Replace with your backend API endpoint
-      setUser(response.data); // Assuming your API returns user data on successful registration
+      const response = await axios.post('/api/signup', formData);
+      setUser(response.data);
     } catch (error) {
       console.error(error);
     }
-    const adresshandle={
+  };
+  const handleDaumPostcode = async () => {
+    try {
+      const data = await getAddress();
+      const roadAddr = data.roadAddress;
+
+      // 주소 정보 업데이트
+      setFormData({
+        ...formData,
+        postcode: data.zonecode,
+        roadAddress: roadAddr,
+        jibunAddress: data.jibunAddress,
+        extraAddress: roadAddr ? `(${data.buildingName})` : '',
+      });
+    } catch (error) {
+      console.error(error);
     }
   };
 
   return (
-    <div>
+    <div className='signuppage'>
       <h2>Sign Up</h2>
       <input
         type="text"
@@ -52,19 +76,39 @@ function  SignUp () {
         value={formData.age}
         onChange={handleInputChange}
       />
-      
-    <input
-        type="tesx"
-        name="adress"
-        placeholder="teail adress"
-        value={formData.adress}
+      {/* 주소*/}
+      <input
+        type="text"
+        id="sample4_postcode"
+        placeholder="우편번호"
+        value={formData.postcode}
         onChange={handleInputChange}
       />
-      <button>
-      </button>
+      {/* 주소찾기 버튼 */}
+      <input
+        type="button"
+        onClick={handleDaumPostcode}
+        value="우편번호 찾기"
+      />
+      <br />
+      <input
+        type="text"
+        id="sample4_roadAddress"
+        placeholder="도로명주소"
+        value={formData.roadAddress}
+        onChange={handleInputChange}
+      />
+      {/* ... (기존의 주소 관련 폼 필드들) */}
+      <input
+        type="text"
+        id="sample4_detailAddress"
+        placeholder="상세주소"
+        value={formData.detailAddress}
+        onChange={handleInputChange}
+      />
       <button onClick={handleSignUp}>Sign Up</button>
     </div>
   );
-};
+}
 
 export default SignUp;
