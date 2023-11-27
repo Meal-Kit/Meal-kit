@@ -112,13 +112,13 @@ public class CustomerController {
     @ResponseBody
     public ResponseEntity<ResponseData> login(@RequestBody LoginVO request) {
         if (request.isNotValid()) {
-            return ResponseUtil.failResponse();
+            return ResponseUtil.failResponseEntity();
         }
 
         Customer customer = customerService.findByUsername(request.getUsername()).orElse(null);
 
         if (customer == null) {
-            return ResponseUtil.failResponse();
+            return ResponseUtil.failResponseEntity();
         }
 
         // accessToken 생성
@@ -128,7 +128,7 @@ public class CustomerController {
         HttpHeaders headers = new HttpHeaders();
         headers.set("Authentication", accessToken);
 
-        return ResponseUtil.successResponseWithHeader(customer, headers);
+        return ResponseUtil.successResponse(customer, headers);
     }
 
     @PreAuthorize("isAuthenticated()")
