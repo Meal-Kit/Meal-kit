@@ -4,7 +4,7 @@ import javax.validation.constraints.NotBlank;
 import lombok.Data;
 
 @Data
-public class ModifyPasswordForm {
+public class ModifyPasswordVO {
     @NotBlank(message = "비밀번호를 입력해주세요.")
     private String password;
 

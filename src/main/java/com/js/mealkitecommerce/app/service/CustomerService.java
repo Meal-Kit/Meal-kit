@@ -3,6 +3,7 @@ package com.js.mealkitecommerce.app.service;
 import com.js.mealkitecommerce.app.entity.Customer;
 import com.js.mealkitecommerce.app.exception.DataNotFoundException;
 import com.js.mealkitecommerce.app.model.VO.Customer.JoinRequestVO;
+import com.js.mealkitecommerce.app.model.VO.Customer.ModifyCustomerVO;
 import com.js.mealkitecommerce.app.model.context.CustomerContext;
 import com.js.mealkitecommerce.app.repository.CustomerRepository;
 import java.util.Optional;
@@ -40,7 +41,7 @@ public class CustomerService {
         return customer;
     }
 
-    public void modify(CustomerContext context, Customer modifyForm) {
+    public void modify(CustomerContext context, ModifyCustomerVO modifyForm) {
         Customer customer =
                 customerRepository
                         .findByUsername(context.getUsername())

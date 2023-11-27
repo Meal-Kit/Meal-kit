@@ -27,7 +27,7 @@ public class SecurityConfig {
         http.authorizeRequests(
                         authorizaRequests ->
                                 authorizaRequests
-                                        .antMatchers("/customer/login", "/customer/join")
+                                        .antMatchers("/api/customer/login", "/api/customer/join")
                                         .permitAll()
                                         .anyRequest()
                                         .authenticated())

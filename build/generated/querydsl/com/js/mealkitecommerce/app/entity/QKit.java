@@ -2,17 +2,13 @@ package com.js.mealkitecommerce.app.entity;
 
 import static com.querydsl.core.types.PathMetadataFactory.*;
 
-import com.querydsl.core.types.dsl.*;
-
-import com.querydsl.core.types.PathMetadata;
-import javax.annotation.processing.Generated;
 import com.querydsl.core.types.Path;
+import com.querydsl.core.types.PathMetadata;
+import com.querydsl.core.types.dsl.*;
 import com.querydsl.core.types.dsl.PathInits;
+import javax.annotation.processing.Generated;
 
-
-/**
- * QKit is a Querydsl query type for Kit
- */
+/** QKit is a Querydsl query type for Kit */
 @Generated("com.querydsl.codegen.DefaultEntitySerializer")
 public class QKit extends EntityPathBase<Kit> {
 
@@ -24,21 +20,21 @@ public class QKit extends EntityPathBase<Kit> {
 
     public final QBaseEntity _super = new QBaseEntity(this);
 
-    //inherited
+    // inherited
     public final DateTimePath<java.time.LocalDateTime> createDate = _super.createDate;
 
     public final NumberPath<Integer> discount = createNumber("discount", Integer.class);
 
     public final StringPath how = createString("how");
 
-    //inherited
+    // inherited
     public final NumberPath<Long> id = _super.id;
 
     public final StringPath kind = createString("kind");
 
     public final QCustomer member;
 
-    //inherited
+    // inherited
     public final DateTimePath<java.time.LocalDateTime> modifyDate = _super.modifyDate;
 
     public final NumberPath<Integer> price = createNumber("price", Integer.class);
@@ -67,6 +63,4 @@ public class QKit extends EntityPathBase<Kit> {
         super(type, metadata, inits);
         this.member = inits.isInitialized("member") ? new QCustomer(forProperty("member")) : null;
     }
-
 }
-
