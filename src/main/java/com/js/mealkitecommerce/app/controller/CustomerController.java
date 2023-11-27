@@ -1,114 +1,60 @@
 package com.js.mealkitecommerce.app.controller;
 
 import com.js.mealkitecommerce.app.entity.Customer;
-import com.js.mealkitecommerce.app.exception.DataNotFoundException;
-import com.js.mealkitecommerce.app.exception.EmailDuplicatedException;
-import com.js.mealkitecommerce.app.exception.NotMatchPresentPassword;
-import com.js.mealkitecommerce.app.exception.UserIdDuplicatedException;
+import com.js.mealkitecommerce.app.exception.*;
 import com.js.mealkitecommerce.app.global.email.service.EmailService;
 import com.js.mealkitecommerce.app.global.util.ResponseUtil;
-import com.js.mealkitecommerce.app.global.util.Util;
 import com.js.mealkitecommerce.app.model.VO.Customer.*;
 import com.js.mealkitecommerce.app.model.common.ResponseData;
 import com.js.mealkitecommerce.app.model.context.CustomerContext;
 import com.js.mealkitecommerce.app.service.CustomerService;
 import com.js.mealkitecommerce.app.service.common.JwtService;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequiredArgsConstructor
-@RequestMapping("/customer")
+@RequestMapping("/api/customer")
 public class CustomerController {
     private final CustomerService customerService;
     private final JwtService jwtService;
     private final PasswordEncoder passwordEncoder;
-
     private final EmailService emailService;
 
-    // model과 attributeModel의 차이점 : 데이터를 불러오고 싶을 경우 modelattribute 어노테이션 사용
-    // 데이터를 전송할 때에는 웬만하면 model 을 사용하는 것이 맞음
-    @PreAuthorize("isAuthenticated()")
-    @GetMapping("/profile")
-    public String showProfile(@AuthenticationPrincipal CustomerContext context, Model model) {
-        Customer customer =
-                customerService
-                        .findByUsername(context.getUsername())
-                        .orElseThrow(() -> new DataNotFoundException("Customer Not Found"));
-
-        model.addAttribute("customer", customer);
-
-        return "customer/profile";
-    }
-
-    @PreAuthorize("isAnonymous()")
-    @GetMapping("/join")
-    public String showJoin(@ModelAttribute("joinForm") JoinRequestVO joinForm) {
-        return "customer/join";
-    }
-
-    @GetMapping("/checkEmail")
+    // 회원가입 -> 자동로그인(Header에 자동 포함)
+    @PostMapping(
+            value = "/join",
+            consumes = {MediaType.APPLICATION_JSON_VALUE},
+            produces = {MediaType.APPLICATION_JSON_VALUE})
     @ResponseBody
-    public Customer checkDuplicateEmail(@RequestBody SingleParamVO param) {
-        Customer customer = customerService.findByEmail(param.getParam()).orElse(null);
-
-        return customer;
-    }
-
-    @GetMapping("/checkUsername")
-    @ResponseBody
-    public ResponseEntity<ResponseData> checkDuplicateUsername(@RequestBody SingleParamVO param) {
-        Customer customer = customerService.findByUsername(param.getParam()).orElse(null);
-
-        return ResponseUtil.successResponse(customer);
-    }
-
-    @PreAuthorize("isAnonymous()")
-    @PostMapping("/join")
-    public String join(
-            HttpServletRequest req, @Valid JoinRequestVO joinForm, BindingResult bindingResult) {
+    public ResponseEntity<ResponseData> join(@RequestBody JoinRequestVO joinForm) {
+        LoginVO login;
         try {
-            customerService.join(joinForm);
+            Customer customer = customerService.join(joinForm);
+            login = new LoginVO(customer.getUsername(), customer.getPassword());
         } catch (EmailDuplicatedException e) {
-            bindingResult.reject("EmailDuplicatedException", e.getMessage());
-            return "customer/join";
+            throw new EmailDuplicatedException("EMAIL_DUPLICATED_ERROR");
         } catch (UserIdDuplicatedException e) {
-            bindingResult.reject("UserIdDuplicatedException", e.getMessage());
+            throw new UserIdDuplicatedException("ID_DUPLICATED_ERROR");
         } catch (Exception e) {
-            e.printStackTrace();
-            bindingResult.reject("SignUpFailed", e.getMessage());
-            return "customer/join";
+            throw new SignUpException("SIGN_UP_ERROR");
         }
 
-        try {
-            req.login(joinForm.getUsername(), joinForm.getPassword());
-        } catch (ServletException e) {
-            throw new RuntimeException(e);
-        }
-
-        String loginMsg = Util.url.encode("로그인 되었습니다");
-        return "redirect:/customer/profile?msg=%s".formatted(loginMsg);
+        return login(login);
     }
 
-    @PreAuthorize("isAnonymous()")
-    @GetMapping("/login")
-    public String showLogin() {
-        return "customer/login";
-    }
-
-    @PostMapping("/login")
+    // 로그인 로직 -> JWT Token 자동 생성 후 헤더에 입력(Ahthentication)
+    @PostMapping(
+            value = "/login",
+            consumes = {MediaType.APPLICATION_JSON_VALUE},
+            produces = {MediaType.APPLICATION_JSON_VALUE})
     @ResponseBody
     public ResponseEntity<ResponseData> login(@RequestBody LoginVO request) {
         if (request.isNotValid()) {
@@ -123,7 +69,6 @@ public class CustomerController {
 
         // accessToken 생성
         String accessToken = jwtService.generateAccessKey(customer);
-        System.out.println(accessToken);
 
         HttpHeaders headers = new HttpHeaders();
         headers.set("Authentication", accessToken);
@@ -131,58 +76,47 @@ public class CustomerController {
         return ResponseUtil.successResponse(customer, headers);
     }
 
-    @PreAuthorize("isAuthenticated()")
-    @GetMapping("/modify")
-    public String showModify(@AuthenticationPrincipal CustomerContext context, Model model) {
+    // 프로필 조회(JWT 입력해주면 바로 조회됨, 다른거 안넣어도 자동으로 출력)
+    @PostMapping(
+            value = "/profile",
+            produces = {MediaType.APPLICATION_JSON_VALUE})
+    @ResponseBody
+    public ResponseEntity<ResponseData> retrieveCustomerProfile(
+            @AuthenticationPrincipal CustomerContext context) {
         Customer customer =
                 customerService
                         .findByUsername(context.getUsername())
                         .orElseThrow(() -> new DataNotFoundException("Customer Not Found"));
 
-        model.addAttribute("c", customer);
-
-        return "customer/modify";
+        return ResponseUtil.successResponse(customer);
     }
 
-    @PreAuthorize("isAuthenticated()")
-    @PostMapping("/modify")
-    public String modify(
-            @AuthenticationPrincipal CustomerContext context,
-            @Valid Customer modifyForm,
-            BindingResult bindingResult) {
-        if (bindingResult.hasErrors()) {
-            return "customer/modify";
-        }
-
+    // 회원 정보 수정
+    @PostMapping(
+            value = "/modify",
+            consumes = {MediaType.APPLICATION_JSON_VALUE},
+            produces = {MediaType.APPLICATION_JSON_VALUE})
+    public ResponseEntity<ResponseData> modifyCustomerData(
+            @AuthenticationPrincipal CustomerContext context, @RequestBody ModifyCustomerVO modifyForm) {
         try {
             customerService.modify(context, modifyForm);
         } catch (EmailDuplicatedException e) {
-            bindingResult.reject("EmailDuplicatedException", e.getMessage());
-            return "customer/modify";
+            throw new EmailDuplicatedException("EMAIL_DUPLICATED_ERROR");
         } catch (UserIdDuplicatedException e) {
-            bindingResult.reject("UserIdDuplicatedException", e.getMessage());
+            throw new UserIdDuplicatedException("ID_DUPLICATED_ERROR");
         }
 
-        return "redirect:/customer/profile";
+        return ResponseUtil.successResponse();
     }
 
-    @PreAuthorize("isAuthenticated()")
-    @GetMapping("/modifyPassword")
-    public String showModifyPassword(@ModelAttribute ModifyPasswordForm modifyPasswordForm) {
-
-        return "customer/modifyPassword";
-    }
-
-    @PreAuthorize("isAuthenticated()")
-    @PostMapping("/modifyPassword")
-    public String modifyPassword(
+    // 비밀번호 수정
+    @PostMapping(
+            value = "/modifyPassword",
+            consumes = {MediaType.APPLICATION_JSON_VALUE},
+            produces = {MediaType.APPLICATION_JSON_VALUE})
+    public ResponseEntity<ResponseData> modifyCustomerPassword(
             @AuthenticationPrincipal CustomerContext context,
-            @Valid ModifyPasswordForm modifyPasswordForm,
-            BindingResult bindingResult) {
-        if (bindingResult.hasErrors()) {
-            return "customer/modifyPassword";
-        }
-
+            @RequestBody ModifyPasswordVO modifyPasswordForm) {
         Customer loginedCustomer =
                 customerService
                         .findByUsername(context.getUsername())
@@ -195,53 +129,37 @@ public class CustomerController {
         try {
             customerService.modifyPassword(loginedCustomer, modifyPasswordForm.getModifyPassword());
         } catch (DataNotFoundException e) {
-            bindingResult.reject("EmailDuplicatedException", e.getMessage());
-            return "customer/modifyPassword";
+            throw new DataNotFoundException("DATA_NOT_FOUND");
         } catch (NotMatchPresentPassword e) {
-            bindingResult.reject("NotMatchPresentPassword", e.getMessage());
-            return "customer/modifyPassword";
+            throw new NotMatchPresentPassword("NOT_MATCH_PRESENT_PASSWORD");
         }
 
-        return "redirect:/customer/profile";
+        return ResponseUtil.successResponse();
     }
 
-    @GetMapping("/findUsername")
-    public String showFindUsername(@ModelAttribute FindUsernameForm findUsernameForm) {
-        return "customer/findUsername";
-    }
-
-    @PostMapping("/findUsername")
-    public String findUsername(
-            Model model, @Valid FindUsernameForm findUsernameForm, BindingResult bindingResult) {
-        if (bindingResult.hasErrors()) {
-            return "customer/findUsername";
-        }
-
+    // 회원 아이디 찾기
+    @PostMapping(
+            value = "/findUsername",
+            consumes = {MediaType.APPLICATION_JSON_VALUE},
+            produces = {MediaType.APPLICATION_JSON_VALUE})
+    public ResponseEntity<ResponseData> retrieveUsername(@RequestBody FindUsernameVO findUsernameVo) {
         Customer customer =
                 customerService
-                        .findByEmail(findUsernameForm.getEmail())
+                        .findByEmail(findUsernameVo.getEmail())
                         .orElseThrow(() -> new DataNotFoundException("등록된 아이디가 존재하지 않습니다."));
 
-        model.addAttribute("customer", customer);
-
-        return "customer/findUsername";
+        return ResponseUtil.successResponse(customer);
     }
 
-    @GetMapping("/findPassword")
-    public String showFindPassword(@ModelAttribute FindPasswordForm findPasswordForm) {
-        return "customer/findPassword";
-    }
-
-    @PostMapping("/findPassword")
-    public String findPassword(
-            @Valid FindPasswordForm findPasswordForm, BindingResult bindingResult) {
-        if (bindingResult.hasErrors()) {
-            return "customer/findPassword";
-        }
-
+    // 비밀번호 찾기
+    @PostMapping(
+            value = "/findPassword",
+            consumes = {MediaType.APPLICATION_JSON_VALUE},
+            produces = {MediaType.APPLICATION_JSON_VALUE})
+    public ResponseEntity<ResponseData> retrievePassword(@RequestBody FindPasswordVO findPasswordVo) {
         Customer customer =
                 customerService
-                        .findByUsernameAndEmail(findPasswordForm.getUsername(), findPasswordForm.getEmail())
+                        .findByUsernameAndEmail(findPasswordVo.getUsername(), findPasswordVo.getEmail())
                         .orElseThrow(() -> new DataNotFoundException("등록된 사용자가 없습니다."));
 
         String newPassword = RandomStringUtils.randomAlphanumeric(10);
@@ -249,11 +167,11 @@ public class CustomerController {
         try {
             customerService.setNewPassword(customer, newPassword);
         } catch (DataNotFoundException e) {
-            bindingResult.reject("등록된 사용자가 없습니다.", e.getMessage());
+            throw new DataNotFoundException("DATA_NOT_FOUND");
         }
 
         emailService.sendSimpleMessage(customer, newPassword);
 
-        return "redirect:/customer/login";
+        return ResponseUtil.successResponse();
     }
 }
