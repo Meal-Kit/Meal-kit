@@ -70,6 +70,13 @@ function SignUp() {
         onChange={handleInputChange}
       />
       <input
+        type="text"
+        name="e-mail"
+        placeholder="e-mail"
+        value={formData.email}
+        onChange={handleInputChange}
+      />
+      <input
         type="number"
         name="age"
         placeholder="age"
@@ -79,7 +86,7 @@ function SignUp() {
       {/* 주소*/}
       <input
         type="text"
-        id="sample4_postcode"
+        id="postcode"
         placeholder="우편번호"
         value={formData.postcode}
         onChange={handleInputChange}
@@ -93,15 +100,14 @@ function SignUp() {
       <br />
       <input
         type="text"
-        id="sample4_roadAddress"
+        id="roadAddress"
         placeholder="도로명주소"
         value={formData.roadAddress}
         onChange={handleInputChange}
       />
-      {/* ... (기존의 주소 관련 폼 필드들) */}
       <input
         type="text"
-        id="sample4_detailAddress"
+        id="detailAddress"
         placeholder="상세주소"
         value={formData.detailAddress}
         onChange={handleInputChange}

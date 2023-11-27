@@ -1,5 +1,4 @@
 import axios from "axios";
-import { async } from "q";
 import { atom, selector } from "recoil"; 
 
 /* Axios instance */
