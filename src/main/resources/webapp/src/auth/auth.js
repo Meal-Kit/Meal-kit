@@ -7,6 +7,7 @@ export const Auth = axios.create({
     headers:{
         'Content-Type': 'application/json',
     }
+    
 })
 /*Token State*/
 export const Tokenstate = atom({
