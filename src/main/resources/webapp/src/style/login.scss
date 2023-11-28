@@ -1,4 +1,3 @@
-
 .login{
     margin: 0 auto;
     width: 460px;
@@ -6,8 +5,9 @@
 }
 .signuppage{
     margin: 0 auto;
-    width: 460px;
+    width: 760px;
     height:460px;
+    margin-top: 70px;
 }
 .idbox{
     margin-top:2rem;
@@ -47,4 +47,75 @@
         color:gold;
     }
 
+}
+.need-section{
+  margin-top: 80px;
+}
+.section{
+  display: inline-flex;
+  margin-top: 40px;
+}
+.exsection{
+  width:150px;
+  padding-top:15px;
+}
+.inputbox{
+  width:500px;
+  height:60px;
+  font-weight: 600;
+  font-size: 16px;
+  padding: 0px 11px 0px 15px;
+  color:#000000;
+}
+.label{
+  line-height: 20px;
+  font-weight: 900;
+
+}
+.postnumber{
+  width:350px;
+  height:60px;
+  font-weight: 600;
+  font-size: 16px;
+  padding: 0px 11px 0px 15px;
+  color:#000000;
+}
+.adressbtn{
+  margin-left: 50px;
+  font-size: 16px;
+  font-weight: 600;
+  background-color: #FFFFFF;
+
+}
+.roadadress{
+  margin-left:150px;
+  margin-top: 15px;
+  width:200px;
+  height:60px;
+  font-weight: 600;
+  font-size: 16px;
+  padding: 0px 11px 0px 15px;
+  color:#000000;
+}
+.detailadress{
+  margin-left:150px;
+  margin-top:15px;
+  margin-bottom: 40px;
+  width:500px;
+  height:60px;
+  font-weight: 600;
+  font-size: 16px;
+  padding: 0px 11px 0px 15px;
+  color:#000000;
+
+}
+.signupbtnsection{
+  margin-top: 40px;
+}
+.signupbtn{
+  display: flex;
+  margin:0 auto;
+  width:150px;
+  height:45px;
+  font-size: 16px;
 }

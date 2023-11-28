@@ -56,31 +56,43 @@ function SignUp() {
     <div className='signuppage'>
       <h2>Sign Up</h2>
       <input
+        className='idbox'
         type="text"
         name="id"
-        placeholder="id"
+        placeholder="아이디를 입력해주세요"
         value={formData.id}
         onChange={handleInputChange}
       />
       <input
+        className='pwbox'
         type="password"
         name="password"
-        placeholder="Password"
+        placeholder="비밀번호를 입력해 주세요"
         value={formData.password}
         onChange={handleInputChange}
       />
       <input
+      className='email'
         type="text"
         name="e-mail"
-        placeholder="e-mail"
+        placeholder="예:abc123@naver.com"
         value={formData.email}
         onChange={handleInputChange}
       />
       <input
-        type="number"
+        className='birth'
+        type="birthmonth"
         name="age"
-        placeholder="age"
+        placeholder="생년월일 예:991122"
         value={formData.age}
+        onChange={handleInputChange}
+      />
+      <input
+        className='phone'
+        type="tel"
+        name="phone"
+        placeholder="전화번호"
+        value={formData.phone}
         onChange={handleInputChange}
       />
       {/* 주소*/}
@@ -107,9 +119,9 @@ function SignUp() {
       />
       <input
         type="text"
-        id="detailAddress"
+        id="detail"
         placeholder="상세주소"
-        value={formData.detailAddress}
+        value={formData.detail}
         onChange={handleInputChange}
       />
       <button onClick={handleSignUp}>Sign Up</button>
