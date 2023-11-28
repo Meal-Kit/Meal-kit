@@ -1,0 +1,85 @@
+.navbar{
+    background-color:   black;
+    padding: 15px 0px;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    padding: 5px;
+}
+//카테고리 
+.categorybox{
+    position: relative;
+    display: flex;
+    color:#ddd;
+    right: 30rem;
+    font-size: 18px;
+    font-weight: 500;
+    line-height: 20px;
+    height:100%;
+    padding:0.6rem;
+    &:hover{
+        color:gold
+    }
+    .category{
+        margin-left:0.3rem;
+    }
+    .subcategory-list {
+        display: none;
+        position: absolute;
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        background-color: #f9f9f9;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        z-index: 1;
+        margin-top: 0.7rem;
+        width:140px;
+            li {
+                padding: 10px;
+                cursor: pointer;
+        
+                    &:hover {
+                    background-color: #ffffff;
+                    }
+            }
+        }
+    
+        &:hover .subcategory-list {
+        display: block;
+        color: black;
+        }
+
+    }
+
+//검색창
+.search-box{
+    display: flex;
+    border: 1px; 
+
+
+}
+.box{
+    width:330px;
+    height:30px;
+    outline: none;
+}
+
+//유저
+.user-section{
+    position:absolute;
+    right: 3rem;
+    display:flex;
+    .navbarMenu{
+        
+        &:hover{
+            color:gold
+        }
+}
+}
+
+
+.navbarMenu{
+    color:white;
+    margin: 8px;
+    text-decoration: none;    
+}

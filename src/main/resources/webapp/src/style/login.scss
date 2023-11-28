@@ -1,0 +1,50 @@
+
+.login{
+    margin: 0 auto;
+    width: 460px;
+    height:460px;
+}
+.signuppage{
+    margin: 0 auto;
+    width: 460px;
+    height:460px;
+}
+.idbox{
+    margin-top:2rem;
+    width:430px;
+    height: 40px;
+    border-radius: 9px;
+}
+.pwbox{
+    width:430px;
+    height: 40px;
+    margin-top:4rem;
+    border-radius: 9px;
+}
+.btn{
+    width:215px;
+    height: 40px;
+    margin-top:5rem;
+    border-radius: 9px;
+    background-color: black;
+    color: #ffffff;
+    font-size: 18px;
+    font-weight: 500;
+    line-height: 20px;
+    &:hover{
+        color:gold;
+    }
+}
+.signup{
+    text-decoration-line: none;
+    &:hover{
+        color:gold
+    }
+}
+.signup:visited{
+    color:#FFFFFF;
+    &:hover{
+        color:gold;
+    }
+
+}
