@@ -31,9 +31,14 @@ public class CustomerService {
                         .name(joinForm.getName())
                         .username(joinForm.getUsername())
                         .password(passwordEncoder.encode(joinForm.getPassword()))
+                        .name(joinForm.getName())
                         .email(joinForm.getEmail())
-                        .address(joinForm.getAddress() + " " + joinForm.getAddress2())
-                        .tel(joinForm.getTel())
+                        .phoneNum(joinForm.getPhoneNum())
+                        .age(joinForm.getAge())
+                        .sex(joinForm.getSex())
+                        .address(joinForm.getAddress())
+                        .addressDetail(joinForm.getAddressDetail())
+                        .postNum(joinForm.getPostNum())
                         .build();
 
         customerRepository.save(customer);
@@ -41,7 +46,7 @@ public class CustomerService {
         return customer;
     }
 
-    public void modify(CustomerContext context, ModifyCustomerVO modifyForm) {
+    public void updateCustomer(CustomerContext context, ModifyCustomerVO modifyForm) {
         Customer customer =
                 customerRepository
                         .findByUsername(context.getUsername())
@@ -49,13 +54,17 @@ public class CustomerService {
 
         customer.setName(modifyForm.getName());
         customer.setEmail(modifyForm.getEmail());
+        customer.setPhoneNum(modifyForm.getPhoneNum());
+        customer.setAge(modifyForm.getAge());
+        customer.setSex(modifyForm.getSex());
         customer.setAddress(modifyForm.getAddress());
-        customer.setTel(modifyForm.getTel());
+        customer.setAddressDetail(modifyForm.getAddressDetail());
+        customer.setPostNum(modifyForm.getPostNum());
 
         customerRepository.save(customer);
     }
 
-    public void modifyPassword(Customer customer, String modifyPassword) {
+    public void updatePassword(Customer customer, String modifyPassword) {
         String encodePassword = passwordEncoder.encode(modifyPassword);
         customer.setPassword(encodePassword);
 
