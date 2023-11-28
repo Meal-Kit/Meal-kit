@@ -1,17 +1,21 @@
 package com.js.mealkitecommerce.app.model.VO.Customer;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.js.mealkitecommerce.app.constants.type.SexType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Data
 @AllArgsConstructor
 public class JoinRequestVO {
-    private String name;
     private String username;
     private String password;
-    private String passwordConfirm;
+    private String name;
     private String email;
+    private String phoneNum;
+    private String age;
+    private SexType sex;
     private String address;
-    private String address2;
-    private String tel;
+    private String addressDetail;
+    private String postNum;
 }

@@ -1,5 +1,6 @@
 package com.js.mealkitecommerce.app.model.context;
 
+import com.js.mealkitecommerce.app.constants.type.SexType;
 import com.js.mealkitecommerce.app.entity.Customer;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -15,8 +16,12 @@ public class CustomerContext extends User {
     private final String username;
     private final String name;
     private final String email;
+    private final String phoneNum;
+    private final String age;
+    private final SexType sex;
     private final String address;
-    private final String tel;
+    private final String addressDetail;
+    private final String postNum;
 
     public CustomerContext(Customer customer, List<GrantedAuthority> authorities) {
         super(customer.getUsername(), customer.getPassword(), authorities);
@@ -26,8 +31,12 @@ public class CustomerContext extends User {
         this.username = customer.getUsername();
         this.name = customer.getName();
         this.email = customer.getEmail();
+        this.phoneNum = customer.getPhoneNum();
+        this.age = customer.getAge();
+        this.sex = customer.getSex();
         this.address = customer.getAddress();
-        this.tel = customer.getTel();
+        this.addressDetail = customer.getAddressDetail();
+        this.postNum = customer.getPostNum();
     }
 
     public Customer getCustomer() {
@@ -38,8 +47,12 @@ public class CustomerContext extends User {
                 .username(username)
                 .name(name)
                 .email(email)
+                .phoneNum(phoneNum)
+                .age(age)
+                .sex(sex)
                 .address(address)
-                .tel(tel)
+                .addressDetail(addressDetail)
+                .postNum(postNum)
                 .build();
     }
 }

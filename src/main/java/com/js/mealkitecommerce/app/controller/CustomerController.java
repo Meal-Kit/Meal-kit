@@ -32,7 +32,8 @@ public class CustomerController {
     @PostMapping(
             value = "/join",
             consumes = {MediaType.APPLICATION_JSON_VALUE},
-            produces = {MediaType.APPLICATION_JSON_VALUE})
+            produces = {MediaType.APPLICATION_JSON_VALUE}
+    )
     @ResponseBody
     public ResponseEntity<ResponseData> join(@RequestBody JoinRequestVO joinForm) {
         LoginVO login;
@@ -99,7 +100,7 @@ public class CustomerController {
     public ResponseEntity<ResponseData> modifyCustomerData(
             @AuthenticationPrincipal CustomerContext context, @RequestBody ModifyCustomerVO modifyForm) {
         try {
-            customerService.modify(context, modifyForm);
+            customerService.updateCustomer(context, modifyForm);
         } catch (EmailDuplicatedException e) {
             throw new EmailDuplicatedException("EMAIL_DUPLICATED_ERROR");
         } catch (UserIdDuplicatedException e) {
@@ -127,7 +128,7 @@ public class CustomerController {
         }
 
         try {
-            customerService.modifyPassword(loginedCustomer, modifyPasswordForm.getModifyPassword());
+            customerService.updatePassword(loginedCustomer, modifyPasswordForm.getModifyPassword());
         } catch (DataNotFoundException e) {
             throw new DataNotFoundException("DATA_NOT_FOUND");
         } catch (NotMatchPresentPassword e) {
