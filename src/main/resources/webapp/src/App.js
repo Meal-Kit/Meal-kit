@@ -1,4 +1,3 @@
-
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Main from "./components/main/main"
 import Login from "./components/customer/login"
@@ -8,7 +7,6 @@ import Nav from './components/global/Nav';
 
 const App = () => {
   return(
-    <BrowserRouter>
       <div className='App'>
         <RecoilRoot>
         <Nav/>
@@ -19,7 +17,6 @@ const App = () => {
         </Routes>
         </RecoilRoot>
       </div>
-      </BrowserRouter>
   );
 }
 
