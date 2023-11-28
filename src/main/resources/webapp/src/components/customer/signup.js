@@ -11,13 +11,12 @@ function SignUp() {
   const [formData, setFormData] = useState({
     id: '',
     password: '',
-    age: '',
+    birth: '',
     address: '',
     postcode: '',
     roadAddress: '',
     jibunAddress: '',
     detailAddress: '',
-    extraAddress: '',
   });
   const handleInputChange = (e) => {
     setFormData({
@@ -54,37 +53,81 @@ function SignUp() {
 
   return (
     <div className='signuppage'>
-      <h2>Sign Up</h2>
+      <h1 >Sign Up</h1>
+      <div className='need-section'>
+      <span className='need'>*필수입력사항</span>
+      </div>
+      <hr/>
+
+      <div className='section id'>
+        <div className='exsection'>
+        <label className='label id'>아이디
+        <span className='needstar'>*</span>
+        </label>
+        </div>
       <input
+        className='inputbox id'
         type="text"
         name="id"
         placeholder="id"
         value={formData.id}
         onChange={handleInputChange}
       />
+      </div>
+
+      <div className='section pw'>
+        <div className='exsection'>
+        <label className='label pw'>비밀번호
+          <span className='needstar'>*</span>
+        </label>
+        </div>
       <input
+        className='inputbox pw'
         type="password"
         name="password"
         placeholder="Password"
         value={formData.password}
         onChange={handleInputChange}
       />
+      </div>
+      <div className='section email'>
+        <div className='exsection'>
+        <label className='label email'>이메일
+        <span className='needstar'>*</span></label>
+        </div>
       <input
+        className='inputbox id'
         type="text"
         name="e-mail"
         placeholder="e-mail"
         value={formData.email}
         onChange={handleInputChange}
       />
+      </div>
+
+        <div className='section birth'>
+          <div className='exsection'>
+          <label className='label birth'>생년월일
+          <span className='needstar'>*</span>
+          </label>
+        </div>  
       <input
-        type="number"
-        name="age"
-        placeholder="age"
-        value={formData.age}
+        className='inputbox birth'
+        type="date"
+        name="birth"
+        value={formData.birth}
         onChange={handleInputChange}
       />
+      </div>
       {/* 주소*/}
+      <div  className='section adress'>
+        <div className='exsection'>
+      <label className='label adress'>주소
+      <span className='needstar'>*</span>
+      </label>
+      </div>
       <input
+        className='postnumber'
         type="text"
         id="postcode"
         placeholder="우편번호"
@@ -93,26 +136,34 @@ function SignUp() {
       />
       {/* 주소찾기 버튼 */}
       <input
+        className='adressbtn'
         type="button"
         onClick={handleDaumPostcode}
         value="우편번호 찾기"
       />
-      <br />
+      </div>
+      <br></br>
       <input
+        className='roadadress'
         type="text"
         id="roadAddress"
         placeholder="도로명주소"
         value={formData.roadAddress}
         onChange={handleInputChange}
       />
+      <br/>
       <input
+        className='detailadress'
         type="text"
         id="detailAddress"
         placeholder="상세주소"
         value={formData.detailAddress}
         onChange={handleInputChange}
       />
-      <button onClick={handleSignUp}>Sign Up</button>
+      <hr/>
+    <div className='signupbtnsection'>
+      <button className='signupbtn' onClick={handleSignUp}>Sign Up</button>
+    </div>
     </div>
   );
 }
