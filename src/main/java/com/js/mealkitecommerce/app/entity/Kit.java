@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import static javax.persistence.FetchType.EAGER;
 import static javax.persistence.FetchType.LAZY;
 
 @Entity
@@ -26,7 +27,7 @@ import static javax.persistence.FetchType.LAZY;
 @SuperBuilder
 @ToString(callSuper = true)
 public class Kit extends BaseEntity {
-    @ManyToOne(fetch = LAZY)
+    @ManyToOne(fetch = EAGER)
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Customer customer;
     private String title;
