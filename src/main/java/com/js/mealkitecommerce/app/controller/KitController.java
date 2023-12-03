@@ -1,5 +1,6 @@
 package com.js.mealkitecommerce.app.controller;
 
+import com.js.mealkitecommerce.app.constants.ExceptionConstants;
 import com.js.mealkitecommerce.app.entity.Kit;
 import com.js.mealkitecommerce.app.exception.NotKitOwnerException;
 import com.js.mealkitecommerce.app.global.rq.Rq;
@@ -75,7 +76,7 @@ public class KitController {
             kit = kitService.findById(kitId);
             kitService.updateKit(request, kit);
         } else {
-            throw new NotKitOwnerException("NOT_KIT_ONWER");
+            throw new NotKitOwnerException(ExceptionConstants.NOT_KIT_OWNER);
         }
 
         return ResponseUtil.successResponse(kit);
@@ -92,7 +93,7 @@ public class KitController {
             kit = kitService.findById(kitId);
             kitService.deleteKit(kit);
         } else {
-            throw new NotKitOwnerException("NOT_KIT_ONWER");
+            throw new NotKitOwnerException(ExceptionConstants.NOT_KIT_OWNER);
         }
 
         return ResponseUtil.successResponse("SUCCESS_DELETE");
