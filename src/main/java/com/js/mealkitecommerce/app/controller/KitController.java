@@ -64,6 +64,15 @@ public class KitController {
         return ResponseUtil.successResponse(newKit);
     }
 
+    @GetMapping(
+            value = "/detail/{kitId}"
+    )
+    @ResponseBody
+    public ResponseEntity<ResponseData> detailKit(@PathVariable Long kitId) {
+        Kit kit = kitService.findById(kitId);
+        return ResponseUtil.successResponse(kit);
+    }
+
     @PostMapping(
             value = "/modify/{kitId}",
             consumes = {MediaType.APPLICATION_JSON_VALUE},
