@@ -8,8 +8,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-import java.util.List;
-
 @UtilityClass
 public class ResponseUtil {
     public static ResponseEntity<ResponseData> successResponse(Object data) {

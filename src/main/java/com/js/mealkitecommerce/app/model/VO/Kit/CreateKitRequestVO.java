@@ -1,7 +1,6 @@
 package com.js.mealkitecommerce.app.model.VO.Kit;
 
 import com.js.mealkitecommerce.app.constants.type.PackingType;
-import com.js.mealkitecommerce.app.entity.Customer;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 

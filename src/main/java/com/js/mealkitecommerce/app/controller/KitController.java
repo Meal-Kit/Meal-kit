@@ -13,15 +13,11 @@ import com.js.mealkitecommerce.app.model.context.CustomerContext;
 import com.js.mealkitecommerce.app.service.KitService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import org.apache.coyote.Response;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
-import javax.print.attribute.standard.Media;
 
 @Controller
 @RequiredArgsConstructor
@@ -30,18 +26,16 @@ public class KitController {
     private final KitService kitService;
     private final Rq rq;
 
-
     @GetMapping(
             value = "/listAll",
-            produces = {MediaType.APPLICATION_JSON_VALUE}
-    )
+            produces = {MediaType.APPLICATION_JSON_VALUE})
     @ResponseBody
     public ResponseEntity<ResponseData> retrieveKitListAll(@RequestBody SearchKitRequestVO request) {
         List<Kit> kits = null;
 
         // 제목 + 카테고리 : type = all, 제목 : type = title, 카테고리 : type = category
         if (!request.getType().equals("all")) {
-            switch(request.getType()) {
+            switch (request.getType()) {
                 case "title":
                     kits = kitService.findAllByTitle(request.getKeyword());
                 case "category":
@@ -56,17 +50,16 @@ public class KitController {
     @PostMapping(
             value = "/create",
             consumes = {MediaType.APPLICATION_JSON_VALUE},
-            produces = {MediaType.APPLICATION_JSON_VALUE}
-    )
+            produces = {MediaType.APPLICATION_JSON_VALUE})
     @ResponseBody
-    public ResponseEntity<ResponseData> createKit(@AuthenticationPrincipal CustomerContext customerContext, @RequestBody CreateKitRequestVO createKitRequestVO) {
+    public ResponseEntity<ResponseData> createKit(
+            @AuthenticationPrincipal CustomerContext customerContext,
+            @RequestBody CreateKitRequestVO createKitRequestVO) {
         Kit newKit = kitService.createKit(customerContext.getCustomer(), createKitRequestVO);
         return ResponseUtil.successResponse(newKit);
     }
 
-    @GetMapping(
-            value = "/detail/{kitId}"
-    )
+    @GetMapping(value = "/detail/{kitId}")
     @ResponseBody
     public ResponseEntity<ResponseData> detailKit(@PathVariable Long kitId) {
         Kit kit = kitService.findById(kitId);
@@ -76,10 +69,12 @@ public class KitController {
     @PostMapping(
             value = "/modify/{kitId}",
             consumes = {MediaType.APPLICATION_JSON_VALUE},
-            produces = {MediaType.APPLICATION_JSON_VALUE}
-    )
+            produces = {MediaType.APPLICATION_JSON_VALUE})
     @ResponseBody
-    public ResponseEntity<ResponseData> updateKit(@AuthenticationPrincipal CustomerContext customerContext, @RequestBody ModifyKitRequestVO request, @PathVariable Long kitId) {
+    public ResponseEntity<ResponseData> updateKit(
+            @AuthenticationPrincipal CustomerContext customerContext,
+            @RequestBody ModifyKitRequestVO request,
+            @PathVariable Long kitId) {
         Kit kit = null;
         if (kitId == customerContext.getId()) {
             kit = kitService.findById(kitId);
@@ -93,10 +88,10 @@ public class KitController {
 
     @PostMapping(
             value = "/delete/{kitId}",
-            produces = {MediaType.APPLICATION_JSON_VALUE}
-    )
+            produces = {MediaType.APPLICATION_JSON_VALUE})
     @ResponseBody
-    public ResponseEntity<ResponseData> deleteKit(@AuthenticationPrincipal CustomerContext customerContext, @PathVariable Long kitId) {
+    public ResponseEntity<ResponseData> deleteKit(
+            @AuthenticationPrincipal CustomerContext customerContext, @PathVariable Long kitId) {
         Kit kit = null;
         if (kitId == customerContext.getId()) {
             kit = kitService.findById(kitId);

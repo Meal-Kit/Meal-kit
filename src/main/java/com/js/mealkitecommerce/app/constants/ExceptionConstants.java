@@ -12,6 +12,5 @@ public class ExceptionConstants {
     public static final String NOT_MATCH_PASSWORD = "NOT_MATCH_PASSWORD";
     public static final String DATA_NOT_FOUND = "DATA_NOT_FOUND";
     public static final String NOT_MATCH_PRESENT_PASSWORD = "NOT_MATCH_PRESENT_PASSWORD";
-
-
+    public static final String NOT_ENOUGH_KIT = "NOT_ENOUGH_KIT";
 }

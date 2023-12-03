@@ -1,8 +1,5 @@
 package com.js.mealkitecommerce.app.model.VO.Customer;
 
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
-
 import com.js.mealkitecommerce.app.constants.type.SexType;
 import lombok.Data;
 

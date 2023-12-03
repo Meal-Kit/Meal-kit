@@ -33,8 +33,7 @@ public class CustomerController {
     @PostMapping(
             value = "/join",
             consumes = {MediaType.APPLICATION_JSON_VALUE},
-            produces = {MediaType.APPLICATION_JSON_VALUE}
-    )
+            produces = {MediaType.APPLICATION_JSON_VALUE})
     @ResponseBody
     public ResponseEntity<ResponseData> join(@RequestBody JoinRequestVO joinForm) {
         LoginVO login;

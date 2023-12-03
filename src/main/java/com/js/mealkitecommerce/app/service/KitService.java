@@ -9,12 +9,10 @@ import com.js.mealkitecommerce.app.entity.allergy.Allergy;
 import com.js.mealkitecommerce.app.entity.material.Material;
 import com.js.mealkitecommerce.app.model.VO.Kit.CreateKitRequestVO;
 import com.js.mealkitecommerce.app.model.VO.Kit.ModifyKitRequestVO;
-import com.js.mealkitecommerce.app.model.context.CustomerContext;
 import com.js.mealkitecommerce.app.repository.KitRepository;
 import java.util.List;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -55,7 +53,6 @@ public class KitService {
     public void deleteKit(Kit kit) {
         kitRepository.delete(kit);
     }
-
 
     public Kit createKit(Customer customer, CreateKitRequestVO request) {
         Kit kit =

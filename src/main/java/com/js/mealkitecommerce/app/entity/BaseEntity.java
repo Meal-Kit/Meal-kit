@@ -15,6 +15,7 @@ import lombok.experimental.SuperBuilder;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import org.springframework.format.annotation.DateTimeFormat;
 
 @Getter
 @SuperBuilder
@@ -27,8 +28,13 @@ public class BaseEntity {
     @GeneratedValue(strategy = IDENTITY)
     private Long id;
 
-    @CreatedDate private LocalDateTime createDate;
-    @LastModifiedDate private LocalDateTime modifyDate;
+    @CreatedDate
+    @DateTimeFormat(pattern = "yyyy-mm-dd")
+    private LocalDateTime createDate;
+
+    @LastModifiedDate
+    @DateTimeFormat(pattern = "yyyy-mm-dd")
+    private LocalDateTime modifyDate;
 
     public BaseEntity(long id) {
         this.id = id;

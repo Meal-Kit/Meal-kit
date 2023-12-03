@@ -1,6 +1,5 @@
 package com.js.mealkitecommerce.app.model.VO.Customer;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.js.mealkitecommerce.app.constants.type.SexType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
