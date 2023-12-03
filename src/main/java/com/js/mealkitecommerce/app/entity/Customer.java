@@ -43,18 +43,4 @@ public class Customer extends BaseEntity {
 
         return userRole;
     }
-
-    public Map<String, Object> getAccessTokenClaims() {
-        return Util.mapOf(
-                "username", getUsername(),
-                "name", getName(),
-                "email", getEmail(),
-                "phoneNum", getPhoneNum(),
-                "age", getAge(),
-                "sex", getSex(),
-                "address", getAddress(),
-                "addressDetail", getAddressDetail(),
-                "postNum", getPostNum()
-        );
-    }
 }

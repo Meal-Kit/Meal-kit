@@ -1,5 +1,6 @@
 package com.js.mealkitecommerce.app.controller;
 
+import com.js.mealkitecommerce.app.constants.ExceptionConstants;
 import com.js.mealkitecommerce.app.entity.Customer;
 import com.js.mealkitecommerce.app.exception.*;
 import com.js.mealkitecommerce.app.global.email.service.EmailService;
@@ -41,11 +42,11 @@ public class CustomerController {
             Customer customer = customerService.join(joinForm);
             login = new LoginVO(customer.getUsername(), customer.getPassword());
         } catch (EmailDuplicatedException e) {
-            throw new EmailDuplicatedException("EMAIL_DUPLICATED_ERROR");
+            throw new EmailDuplicatedException(ExceptionConstants.EMAIL_DUPLICATED_ERROR);
         } catch (UserIdDuplicatedException e) {
-            throw new UserIdDuplicatedException("ID_DUPLICATED_ERROR");
+            throw new UserIdDuplicatedException(ExceptionConstants.ID_DUPLICATE_ERROR);
         } catch (Exception e) {
-            throw new SignUpException("SIGN_UP_ERROR");
+            throw new SignUpException(ExceptionConstants.SIGN_UP_ERROR);
         }
 
         return login(login);
@@ -87,7 +88,7 @@ public class CustomerController {
         Customer customer =
                 customerService
                         .findByUsername(context.getUsername())
-                        .orElseThrow(() -> new DataNotFoundException("Customer Not Found"));
+                        .orElseThrow(() -> new DataNotFoundException(ExceptionConstants.DATA_NOT_FOUND));
 
         return ResponseUtil.successResponse(customer);
     }
@@ -102,9 +103,9 @@ public class CustomerController {
         try {
             customerService.updateCustomer(context, modifyForm);
         } catch (EmailDuplicatedException e) {
-            throw new EmailDuplicatedException("EMAIL_DUPLICATED_ERROR");
+            throw new EmailDuplicatedException(ExceptionConstants.EMAIL_DUPLICATED_ERROR);
         } catch (UserIdDuplicatedException e) {
-            throw new UserIdDuplicatedException("ID_DUPLICATED_ERROR");
+            throw new UserIdDuplicatedException(ExceptionConstants.ID_DUPLICATE_ERROR);
         }
 
         return ResponseUtil.successResponse();
@@ -121,18 +122,18 @@ public class CustomerController {
         Customer loginedCustomer =
                 customerService
                         .findByUsername(context.getUsername())
-                        .orElseThrow(() -> new DataNotFoundException("Customer Not Found"));
+                        .orElseThrow(() -> new DataNotFoundException(ExceptionConstants.DATA_NOT_FOUND));
 
         if (!passwordEncoder.matches(modifyPasswordForm.getPassword(), loginedCustomer.getPassword())) {
-            throw new NotMatchPresentPassword("현재 비밀번호가 틀립니다.");
+            throw new NotMatchPresentPassword(ExceptionConstants.NOT_MATCH_PRESENT_PASSWORD);
         }
 
         try {
             customerService.updatePassword(loginedCustomer, modifyPasswordForm.getModifyPassword());
         } catch (DataNotFoundException e) {
-            throw new DataNotFoundException("DATA_NOT_FOUND");
+            throw new DataNotFoundException(ExceptionConstants.DATA_NOT_FOUND);
         } catch (NotMatchPresentPassword e) {
-            throw new NotMatchPresentPassword("NOT_MATCH_PRESENT_PASSWORD");
+            throw new NotMatchPresentPassword(ExceptionConstants.NOT_MATCH_PRESENT_PASSWORD);
         }
 
         return ResponseUtil.successResponse();
@@ -147,7 +148,7 @@ public class CustomerController {
         Customer customer =
                 customerService
                         .findByEmail(findUsernameVo.getEmail())
-                        .orElseThrow(() -> new DataNotFoundException("등록된 아이디가 존재하지 않습니다."));
+                        .orElseThrow(() -> new DataNotFoundException(ExceptionConstants.DATA_NOT_FOUND));
 
         return ResponseUtil.successResponse(customer);
     }
@@ -161,14 +162,14 @@ public class CustomerController {
         Customer customer =
                 customerService
                         .findByUsernameAndEmail(findPasswordVo.getUsername(), findPasswordVo.getEmail())
-                        .orElseThrow(() -> new DataNotFoundException("등록된 사용자가 없습니다."));
+                        .orElseThrow(() -> new DataNotFoundException(ExceptionConstants.DATA_NOT_FOUND));
 
         String newPassword = RandomStringUtils.randomAlphanumeric(10);
 
         try {
             customerService.setNewPassword(customer, newPassword);
         } catch (DataNotFoundException e) {
-            throw new DataNotFoundException("DATA_NOT_FOUND");
+            throw new DataNotFoundException(ExceptionConstants.DATA_NOT_FOUND);
         }
 
         emailService.sendSimpleMessage(customer, newPassword);
