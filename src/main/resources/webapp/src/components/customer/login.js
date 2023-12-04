@@ -3,12 +3,22 @@ import { useRecoilState } from 'recoil';
 import axios from 'axios';
 import { Tokenstate } from '../../auth/auth';
 import { useNavigate } from 'react-router-dom'; 
-import '../../style/login.scss'
+import Button from '@mui/material/Button'
+import '../../style/login.scss';
+import '../../style/global.scss';
+
 
 function Login () {
   const [token, setToken] = useRecoilState(Tokenstate);
   const [formData, setFormData] = useState({ id: '', pw: '' });
   const navigate = useNavigate();
+  const btncss ={
+    width:'320px',
+    height:'60px',
+    fontWeight: '600',
+    fontSize: '20px',
+    marginBottom: "35px"
+  }
 
   const handleLogin = async () => {
     try {
@@ -29,7 +39,8 @@ function Login () {
 
   return (
     <div className="login">
-      <h1>Login</h1>
+      <div className='global'>
+      <a className='loginlabel'>Login</a>
       <input
         type="text"
         name="id"
@@ -48,10 +59,24 @@ function Login () {
         onChange={(e) => setFormData({ ...formData, password: e.target.value })}
       />
       <br/>
-      <button className="btn"onClick={handleLogin}>로그인</button>
-      <button className="btn" >
-        <a className="signup"href='/signup'>회원가입</a>
-        </button>
+      <div className='find-section'>
+        <div className='id-find-section'>
+          <a  className='idlabel' href='/find-id'>아이디 찾기</a></div>
+        <a className='cross'>|</a>
+        <div className='pw-find-section'>
+          <a className='pwlabel' href='/find-pw'>비밀번호 찾기</a></div>
+      </div>
+      <div className='btn-section'>
+        <div className="loginbtn">
+      <Button variant="contained" style={btncss} onClick={handleLogin}>로그인</Button>
+      </div>
+      <div className="signbtn">
+      <Button variant="outlined" style={btncss}>
+        <a className="signup"  href='/signup'>회원가입</a>
+        </Button>
+      </div>
+    </div>
+    </div>
     </div>
   );
 };

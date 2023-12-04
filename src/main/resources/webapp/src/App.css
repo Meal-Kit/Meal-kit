@@ -1,11 +1,18 @@
 .App {
   text-align: center;
+  height:auto;
+  min-height:100%;
+  padding-bottom: 60px;/*footer의 높이*/
 }
 
+@import url('https://fonts.googleapis.com/css2?family=Hedvig+Letters+Serif:opsz@12..24&display=swap');
 .App-logo {
   height: 40vmin;
   pointer-events: none;
 }
+
+@import url('https://fonts.googleapis.com/css2?family=NatoKorean:opsz@12..24&display=swap');
+
 
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {

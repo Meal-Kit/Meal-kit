@@ -4,7 +4,8 @@ import axios from 'axios';
 import { isAuthenticated } from '../../auth/auth';
 import '../../style/login.scss';
 import getAddress from '../../modul/AdressForm';
-
+import Button from '@mui/material/Button'
+import '../../style/global.scss'
 
 function SignUp() {
   const [user, setUser] = useRecoilState(isAuthenticated);
@@ -50,15 +51,23 @@ function SignUp() {
       console.error(error);
     }
   };
+  const submitbtn ={
+    height:'64px',
+    textAlign: 'center'
+  }
+
 
   return (
     <div className='signuppage'>
-      <h1 >Sign Up</h1>
+      <div className='global'>
+      <a className='signuplabel'>Sign Up</a>
       <div className='need-section'>
-      <span className='need'>*필수입력사항</span>
+      <span className='need'>
+        <a className='needstar'>*</a>
+        필수입력사항</span>
       </div>
       <hr/>
-
+      
       <div className='section id'>
         <div className='exsection'>
         <label className='label id'>아이디
@@ -73,7 +82,13 @@ function SignUp() {
         value={formData.id}
         onChange={handleInputChange}
       />
+      <div className='same-section'>
+        <Button className="same" style={submitbtn} variant="contained">
+          <a className='samelabel' >중복확인</a></Button>
       </div>
+      </div>
+
+      
 
       <div className='section pw'>
         <div className='exsection'>
@@ -96,7 +111,7 @@ function SignUp() {
         <span className='needstar'>*</span></label>
         </div>
       <input
-        className='inputbox id'
+        className='inputbox email'
         type="text"
         name="e-mail"
         placeholder="e-mail"
@@ -126,6 +141,19 @@ function SignUp() {
       <span className='needstar'>*</span>
       </label>
       </div>
+
+      <input
+        className='roadadress'
+        type="text"
+        id="roadAddress"
+        placeholder="도로명주소(여길 클릭해주세요)"
+        value={formData.roadAddress}
+        onChange={handleInputChange}
+        onClick={handleDaumPostcode}
+      />
+      </div>
+      <br></br>
+      <div className='secondline'>
       <input
         className='postnumber'
         type="text"
@@ -133,36 +161,32 @@ function SignUp() {
         placeholder="우편번호"
         value={formData.postcode}
         onChange={handleInputChange}
+       
       />
-      {/* 주소찾기 버튼 */}
       <input
-        className='adressbtn'
-        type="button"
-        onClick={handleDaumPostcode}
-        value="우편번호 찾기"
+        className='extraadress'
+        type="text"
+        id="extraadress"
+        placeholder="추가주소"
+        value={formData.extraAddress}
+        onChange={handleInputChange}
+       
       />
       </div>
-      <br></br>
-      <input
-        className='roadadress'
-        type="text"
-        id="roadAddress"
-        placeholder="도로명주소"
-        value={formData.roadAddress}
-        onChange={handleInputChange}
-      />
       <br/>
       <input
         className='detailadress'
         type="text"
-        id="detailAddress"
+        id="Address"
         placeholder="상세주소"
-        value={formData.detailAddress}
+        value={formData.detail}
         onChange={handleInputChange}
       />
       <hr/>
     <div className='signupbtnsection'>
-      <button className='signupbtn' onClick={handleSignUp}>Sign Up</button>
+      <Button className='signupbtn' size="large" variant="contained" onClick={handleSignUp}>
+        <a className='labelsubmit'>Sign Up</a></Button>
+    </div>
     </div>
     </div>
   );

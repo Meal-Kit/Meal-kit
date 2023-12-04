@@ -4,10 +4,12 @@ import Login from "./components/customer/login"
 import SignUp from "./components/customer/signup"
 import { RecoilRoot } from 'recoil';
 import Nav from './components/global/Nav';
+import Footer from './components/global/footer';
 
 const App = () => {
   return(
       <div className='App'>
+        <div className='App-content'>
         <RecoilRoot>
         <Nav/>
         <Routes>
@@ -15,7 +17,9 @@ const App = () => {
           <Route path="/login" element={<Login/>}/>
           <Route path="/signup" element={<SignUp/>}/>
         </Routes>
+        <Footer/>
         </RecoilRoot>
+        </div>
       </div>
   );
 }
